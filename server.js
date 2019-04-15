@@ -182,16 +182,12 @@ function recommandations(req, res){
 
     // A chunk of data has been recieved.
     resp4.on('data', (chunk2) => {
-      let data = Buffer.from(chunk2);
-      console.log('buffer');
-      console.log(chunk2.toString('utf8'));
-      console.log('buffer2');
+      data4 += chunk2;
     });
 
     // The whole response has been received. Print out the result.
     resp4.on('end', () => {
       console.log(data4);
-      res.send(data4);
       var js = JSON.parse(data4);
       var final = [];
 
@@ -215,7 +211,7 @@ function recommandations(req, res){
         }
       }
 
-      res.send({"searchables":finals});
+      res.send({"searchables":final});
 
     });
 
@@ -224,10 +220,6 @@ function recommandations(req, res){
   });
 }
 }
-
-
-
-
 
 function searchSong(req, res){
   https.get('https://www.google.com/search?q=' + req.query.songName.replace(' ', '+') + '+chanson&rlz=1C1GCEA_enCA771CA771&oq=maman+chanson&aqs=chrome.0.69i59j0l5.2689j0j7&sourceid=chrome&ie=UTF-8', (resp) => {
@@ -359,8 +351,6 @@ function searchSong(req, res){
 }
 Array.prototype.contains = function(element){
     for (i =0; i < this.length; i++){
-      console.log(this[i]);
-      console.log(element);
       if (element != undefined && this[i] != undefined){
       if (this[i].includes(element) == true){
         return true
